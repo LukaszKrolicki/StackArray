@@ -1,36 +1,33 @@
 #include <iostream>
 using namespace std;
 
-class StackArray{
-
+//Array implementation
+class ArrayStack{
 private:
-    int capacity;
-    int top;
     int* items;
+    int capacity; //pojemnosc stosu
+    int top;
 public:
-    StackArray(int c);
+    ArrayStack(int c);
     bool empty();
     bool full();
-    void enque(int x);
-    void pop();
+    void push(int x);
     int peek();
+    void pop();
     void clear();
-
-    friend ostream& operator<<(ostream& out, StackArray& a);
-    ~StackArray();
+    friend ostream& operator<<(ostream& out, ArrayStack& s);
+    ~ArrayStack();
 };
 
-StackArray::StackArray(int c)
-{
-    capacity=c;
+ArrayStack::ArrayStack(int c){
     top=-1;
+    capacity=c;
     items=new int[c];
 }
+ArrayStack::~ArrayStack(){
 
-StackArray::~StackArray(){
-    clear();
 }
-bool StackArray::empty(){
+bool ArrayStack::empty(){
     if(top==-1){
         return true;
     }
@@ -39,8 +36,8 @@ bool StackArray::empty(){
     }
 }
 
-bool StackArray::full(){
-    if(top+1==capacity){
+bool ArrayStack::full(){
+    if(capacity==top+1){
         return true;
     }
     else{
@@ -48,36 +45,96 @@ bool StackArray::full(){
     }
 }
 
-void StackArray::enque(int x){
-    top++;
-    items[top]=x;
-}
-int StackArray::peek(){
-    return items[top];
-}
-void StackArray::pop(){
-    top--;
-}
-void StackArray::clear(){
-    top=-1;
-}
-
-ostream& operator<<(ostream& out, StackArray& a){
-    for(int i=0; i<=a.top; i++){
-        out<<a.items[i]<<" ";
+void ArrayStack::push(int x){
+    if(full()){
+        cout<<"stack full"<<endl;
+    }
+    else{
+        top++;
+        items[top]=x;
     }
 }
 
-int main(){
-    //exmaple
-    StackArray a(5);
-    a.enque(1);
-    a.enque(2);
-    a.enque(3);
-    a.enque(4);
-    a.enque(5);
-    a.pop();
-    a.pop();
-    cout<<a.peek()<<endl;
-    cout<<a;
+int ArrayStack::peek(){
+    if(empty()){
+        cout<<"stack empty error:";
+        return 420;
+
+    }else{
+        return items[top];
+    }
+}
+
+void ArrayStack::pop(){
+    if(empty()){
+        cout<<"stack empty"<<endl;
+    }
+    else{
+        top--;
+    }
+}
+
+void ArrayStack::clear(){
+    if(empty()){
+        cout<<"stack empty"<<endl;
+    }
+    else{
+        top=-1;
+    }
+}
+
+ostream& operator<<(ostream& out, ArrayStack& s){
+
+    if(s.empty()){
+        cout<<"stack empty"<<endl;
+    }
+    else{
+        for(int i=0; i<s.top+1; i++){
+            out<<s.items[i]<<endl;
+        }
+    }
+}
+
+int main()
+{
+    //Example
+    ArrayStack s(3);
+    cout<<"Peek: ";
+    cout<<s.peek()<<endl;
+
+    s.push(1);
+    cout<<"Peek: ";
+    cout<<s.peek()<<endl;
+
+    s.push(2);
+    cout<<"Peek: ";
+    cout<<s.peek()<<endl;
+
+    s.push(3);
+    cout<<"Peek: ";
+    cout<<s.peek()<<endl;
+
+    s.push(4);
+
+    cout<< s;
+
+    cout<<"Peek: ";
+    cout<<s.peek()<<endl;
+
+    s.pop();
+    cout<<"Peek: ";
+    cout<<s.peek()<<endl;
+
+    cout<< s;
+
+    s.pop();
+    cout<<"Peek: ";
+    cout<<s.peek()<<endl;
+
+    s.pop() ;
+    cout<<"Peek: ";
+    cout<<s.peek()<<endl;
+
+    cout<< s;
+    cout<<endl<<endl<<endl;
 }
